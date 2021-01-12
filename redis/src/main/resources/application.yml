@@ -1,0 +1,5 @@
+spring:
+  redis:
+    host: m.wudi.space
+    port: 6379
+

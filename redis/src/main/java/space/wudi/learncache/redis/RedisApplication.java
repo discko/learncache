@@ -16,13 +16,22 @@ public class RedisApplication{
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(RedisApplication.class, args);
+//        testTransaction(context);
+//        testAutowiredGeneric(context);
 //        testRedisTemplate(context);
 //        testRedisPubSub(context);
-        testErrorType(context);
+//        testErrorType(context);
+        testSetAndGetObject(context);
     }
 
-    private static void testErrorType(ApplicationContext context){
-        System.out.println(Arrays.toString("吴迪".getBytes())+ Charset.defaultCharset());
+    private static void testTransaction(ApplicationContext context){
+        RedisSetGet redis = context.getBean(RedisSetGet.class);
+        redis.doTransaction();
+    }
+
+    private static void testAutowiredGeneric(ApplicationContext context){
+        RedisSetGet redis = context.getBean(RedisSetGet.class);
+        redis.setTwoKey();
     }
 
     private static void testRedisTemplate(ApplicationContext context){
@@ -34,6 +43,11 @@ public class RedisApplication{
         redis.set(key, value, expire);
         String redisReturn = (String)redis.get(key);
         System.out.println(redisReturn);
+    }
+
+    private static void testSetAndGetObject(ApplicationContext context){
+        RedisSetGet redis = context.getBean(RedisSetGet.class);
+        redis.setAndGetObject();
     }
 
     private static void testRedisPubSub(ApplicationContext context){

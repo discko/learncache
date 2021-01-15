@@ -1,5 +1,7 @@
+
 spring:
   redis:
     host: m.wudi.space
     port: 6379
-
+    password: ？？？
+debug: true

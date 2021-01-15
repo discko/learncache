@@ -1,6 +1,7 @@
 package space.wudi.learncache.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 @SuppressWarnings("all")
 @Component
+@EnableAutoConfiguration
 public class RedisPubSub {
 
     @Autowired

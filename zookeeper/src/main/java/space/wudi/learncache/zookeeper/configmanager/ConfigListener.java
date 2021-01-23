@@ -97,7 +97,7 @@ public class ConfigListener {
     /**
      * an object combine watcher and callback for ConfigListener
      */
-    private class ListenWatcherCallback extends ZooKeeperResultHolder<Config> implements AsyncCallback.StatCallback, AsyncCallback.DataCallback,Watcher {
+    private class ListenWatcherCallback extends ZooKeeperResultHolder<Config> implements AsyncCallback.StatCallback, AsyncCallback.DataCallback, Watcher {
 
         /**
          * do something if config path node not exists at the beginning

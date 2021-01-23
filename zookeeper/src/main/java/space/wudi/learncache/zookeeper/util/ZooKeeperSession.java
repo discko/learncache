@@ -14,7 +14,13 @@ import java.util.concurrent.CountDownLatch;
 public class ZooKeeperSession {
     private static final Logger logger = LoggerFactory.getLogger(ZooKeeperSession.class);
 
+    /**
+     * connection string
+     */
     private static String SERVERS;
+    /**
+     * timeout time in millisecond
+     */
     private static Integer TIMEOUT;
 
     @Value("${zookeeper.servers}")String servers;
@@ -25,6 +31,13 @@ public class ZooKeeperSession {
         TIMEOUT = timeout;
     }
 
+    /**
+     *
+     * @param root root path
+     * @return ZooKeeper Session
+     * @throws IOException in cases of network failure
+     * @throws InterruptedException if the current thread is interrupted while waiting
+     */
     public static ZooKeeper getZooKeeperClient(String root) throws IOException, InterruptedException {
         CountDownLatch cdl = new CountDownLatch(1);
         final ZooKeeper zk = new ZooKeeper(SERVERS + root, TIMEOUT, event -> {

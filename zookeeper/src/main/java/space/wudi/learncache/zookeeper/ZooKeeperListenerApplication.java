@@ -21,10 +21,10 @@ public class ZooKeeperListenerApplication {
             boolean loadConfigOnExists = true;
             boolean loadConfigOnCreate = true;
             listener.listen(
-                    ConfigPath.topic1,
+                    ConfigPath.configNode1,
                     configZooKeeperResult -> {
                         if(KeeperException.Code.OK == configZooKeeperResult.getCode()){
-                            logger.info("get new config from {}: {}@{}", ConfigPath.topic1, configZooKeeperResult.getData(), configZooKeeperResult.getStat());
+                            logger.info("get new config from {}: {}@{}", ConfigPath.configNode1, configZooKeeperResult.getData(), configZooKeeperResult.getStat());
                         }else{
                             logger.warn("find config but cannot apply. code = {}, throwable = {}", configZooKeeperResult.getCode(), configZooKeeperResult.getThrowable());
                         }
@@ -42,10 +42,10 @@ public class ZooKeeperListenerApplication {
                     }
             );
             listener.listen(
-                    ConfigPath.topic2,
+                    ConfigPath.configNode2,
                     configZooKeeperResult -> {
                         if(KeeperException.Code.OK == configZooKeeperResult.getCode()){
-                            logger.info("get new config from {}: {}@{}", ConfigPath.topic2, configZooKeeperResult.getData(), configZooKeeperResult.getStat());
+                            logger.info("get new config from {}: {}@{}", ConfigPath.configNode2, configZooKeeperResult.getData(), configZooKeeperResult.getStat());
                         }else{
                             logger.warn("find config but cannot apply. code = {}, throwable = {}", configZooKeeperResult.getCode(), configZooKeeperResult.getThrowable());
                         }

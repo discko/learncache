@@ -22,14 +22,14 @@ public class ZooKeeperPublisherApplication {
         try {
             ConfigPublisher configPublisher = new ConfigPublisher(ConfigPath.root);
             Config config1 = new Config(String.format("config time %s", DateTimeFormatter.ofPattern("Y-MM-DD HH:mm:ss").format(LocalDateTime.now())));
-            ZooKeeperResult<String> result1 = configPublisher.publish(config1, ConfigPath.topic1, null);
-            logger.info("first config {} result = {}", ConfigPath.topic1, result1);
+            ZooKeeperResult<String> result1 = configPublisher.publish(config1, ConfigPath.configNode1, null);
+            logger.info("first config {} result = {}", ConfigPath.configNode1, result1);
 
             Thread.sleep(1000);
 
             Config config2 = new Config(String.format("config time %s", DateTimeFormatter.ofPattern("Y-MM-DD HH:mm:ss").format(LocalDateTime.now())));
-            ZooKeeperResult<String> result2 = configPublisher.publish(config2, ConfigPath.topic2, null);
-            logger.info("second config {} result = {}", ConfigPath.topic2, result2);
+            ZooKeeperResult<String> result2 = configPublisher.publish(config2, ConfigPath.configNode2, null);
+            logger.info("second config {} result = {}", ConfigPath.configNode2, result2);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

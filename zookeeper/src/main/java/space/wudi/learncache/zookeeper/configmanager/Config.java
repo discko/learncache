@@ -2,6 +2,9 @@ package space.wudi.learncache.zookeeper.configmanager;
 
 import space.wudi.learncache.zookeeper.util.MySerializable;
 
+/**
+ * pretend to be the config that would be published to and listened from zookeeper
+ */
 public class Config implements MySerializable {
     private static final long serialVersionUID = 1L;
 

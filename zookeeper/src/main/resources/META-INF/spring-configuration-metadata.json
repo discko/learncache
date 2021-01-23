@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "zookeeper.servers",
+      "type": "java.lang.String",
+      "description": "all servers. host1:port1,host2:port2 and separated by comma"
+    },
+    {
+      "name": "zookeeper.timeout",
+      "type": "java.lang.Integer",
+      "description": "connection timeout time in millisecond"
+    }
+  ]
+}

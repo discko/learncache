@@ -120,6 +120,8 @@ public class ConfigPublisher {
                 case OK:
                     logger.info("node created.");
                     result.setData(path);
+                    result.setStat(null);
+                    result.setThrowable(null);
                     cdl.countDown();
                     break;
                 default:
@@ -143,6 +145,7 @@ public class ConfigPublisher {
                     logger.info("update success");
                     result.setData(path);
                     result.setStat(stat);
+                    result.setThrowable(null);
                     cdl.countDown();
                     break;
                 default:

@@ -32,7 +32,7 @@ public class Lock {
     public void lock() throws Throwable {
         // lazy connect to server
         zk = ZooKeeperSession.getZooKeeperClient(ROOT);
-        LockWatcherCallback lockWatcherCallback = new LockWatcherCallback(cdl);
+        LockWatcherCallback lockWatcherCallback = new LockWatcherCallback(/*cdl*/);
         ZooKeeperResult<String> result = lockWatcherCallback.getResult();
         // create ephemeral sequential node
         zk.create("/"+lockName+"/"+lockName, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL, lockWatcherCallback, lockName);
@@ -44,6 +44,9 @@ public class Lock {
     }
 
     public void unlock() {
+        if(zk == null || !zk.getState().isConnected()){
+            return;
+        }
         try {
             zk.delete(realLockName, -1);
         } catch (KeeperException.NoNodeException ignore) {
@@ -55,10 +58,10 @@ public class Lock {
 
     private class LockWatcherCallback extends ZooKeeperResultHolder<String> implements AsyncCallback.StringCallback, Watcher, AsyncCallback.StatCallback {
 
-        private CountDownLatch cdl;
+//        private CountDownLatch cdl;
 
-        LockWatcherCallback(CountDownLatch cdl) {
-            this.cdl = cdl;
+        LockWatcherCallback(/*CountDownLatch cdl*/) {
+//            this.cdl = cdl;
         }
 
         /**
@@ -115,8 +118,10 @@ public class Lock {
         }
 
         /**
-         * try to gain lock if the node is at the first
-         * or start a watcher to monitor previous lock
+         * Try to gain lock if the node is at the first
+         * or start a watcher to monitor previous lock.
+         * <br/>
+         * It is an implement of fair lock
          */
         private void gainLockOrStartWatcher(String lockName) throws InterruptedException, IOException {
             CountDownLatch cdlForGetChildren = new CountDownLatch(1);
@@ -155,7 +160,12 @@ public class Lock {
         }
 
         /**
-         * recursively create parent node of path
+         * recursively create parent node of path synchronously
+         * remember to check the this.result to ensure create successfully
+         * NOTE: A better way to perform is to add a new CreateParentResult object into
+         *      param list (like "<code>void waitAndCreateParentNode(String path, CreateParentResult result)</code>").
+         *      When recurse inside, use the same CreateParentResult object.
+         *      In this way, result of waitAndCreateParentNode would not pollute <code>this.result</code>
          */
         private void waitAndCreateParentNode(String path) throws IOException, InterruptedException {
             logger.info("parent of node {} not exists while locking {}", path, lockName);
@@ -212,10 +222,10 @@ public class Lock {
                                 createParentCdl.countDown();    // release the block
                                 break;
                             default:
-                                logger.warn("parent node {} create failed for lock {}", path1, lockName);
+                                logger.warn("parent node {} create failed for lock {} with code {}", path1, lockName, code1);
                                 result.setData(null);
                                 result.setStat(null);
-                                result.setThrowable(null);
+                                result.setThrowable(new RuntimeException("parent node "+path1+" create failed for lock "+lockName+" with code"+code1));
                                 createParentCdl.countDown();
                         }
                     },
